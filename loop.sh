@@ -1,14 +1,14 @@
-#!/bin/bash
-LOGFILE=/tmp/sitespeed.io.log
-exec > $LOGFILE 2>&1
+#!/bin/bash -x
+#LOGFILE=/tmp/sitespeed.io.log
+#exec > $LOGFILE 2>&1
 
 # In your curent dir we will place a file called sitespeed.run that shows that the tests are running
-# If you want to stop the tests gracefully, remove that file: rm sitespeed.io and wait for 
+# If you want to stop the tests gracefully, remove that file: rm sitespeed.io and wait for
 # the tests to finish (tail -f /tmp/sitespeed.io)
 CONTROL_FILE="./sitespeed.run"
 
 # The first parameter is the server name, so we can find the right tests to run
-if [ -z "$1" ] 
+if [ -z "$1" ]
 then
     echo "Missing server input! You need to run with a parameter that gives the path to the configuration "
     exit 1
@@ -32,7 +32,7 @@ function control() {
     echo "$CONTROL_FILE found. Make another run ..."
   else
     echo "$CONTROL_FILE not found - stopping after cleaning up ..."
-    docker system prune --all --volumes -f
+#    docker system prune --all --volumes -f
     echo "Exit"
     exit 1
   fi
@@ -49,7 +49,7 @@ do
 done
 
 # To get throttle to work (https://github.com/sitespeedio/throttle)!
-sudo modprobe ifb numifbs=1
+#sudo modprobe ifb numifbs=1
 
 while true
 do
@@ -60,7 +60,7 @@ do
       source run.sh $TEST
       result=$?
       if [ $result -ne 0 ]; then
-          echo 'Stop the loop $result' 
+          echo 'Stop the loop $result'
           exit 0;
       fi
     done
